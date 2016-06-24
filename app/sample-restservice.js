@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'httpresource/resource', '@angular/http'], function(exports_1, context_1) {
+System.register(['@angular/core', './httpresource/resource', '@angular/http', './httpresource/ajax-interceptor'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
@@ -18,7 +18,7 @@ System.register(['@angular/core', 'httpresource/resource', '@angular/http'], fun
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, resource_1, http_1;
+    var core_1, resource_1, http_1, ajax_interceptor_1;
     var SampleRestService;
     return {
         setters:[
@@ -30,24 +30,32 @@ System.register(['@angular/core', 'httpresource/resource', '@angular/http'], fun
             },
             function (http_1_1) {
                 http_1 = http_1_1;
+            },
+            function (ajax_interceptor_1_1) {
+                ajax_interceptor_1 = ajax_interceptor_1_1;
             }],
         execute: function() {
             SampleRestService = (function (_super) {
                 __extends(SampleRestService, _super);
                 //    resource:Resource
-                function SampleRestService(http) {
-                    _super.call(this, http);
-                    this.config('test', {}, {
+                function SampleRestService(http, ajaxInterceptor) {
+                    _super.call(this, http, ajaxInterceptor);
+                    this.config('/user/:id', { id: '@id' }, {
                         getList: {
                             method: 'get'
+                        },
+                        saveMyData: {
+                            params: { id: '@id' },
+                            url: 'customer/:id',
+                            method: 'post',
+                            header: { 'contentType': 'application/json', 'custom-key': 'sample value' }
                         }
                     });
-                    //        this.config('test', {}, {});
                 }
                 SampleRestService = __decorate([
                     core_1.Injectable(),
                     __param(0, core_1.Inject(http_1.Http)), 
-                    __metadata('design:paramtypes', [http_1.Http])
+                    __metadata('design:paramtypes', [http_1.Http, ajax_interceptor_1.AjaxInterceptor])
                 ], SampleRestService);
                 return SampleRestService;
             }(resource_1.Resource));

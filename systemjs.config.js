@@ -6,7 +6,7 @@
   // map tells the System loader where to look for things
   var map = {
     'app':                        'app', // 'dist',
-    'httpresource':               'node_modules/httpresource',
+//    'httpresource':               'node_modules/httpresource',
     '@angular':                   'node_modules/@angular',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs'
@@ -15,7 +15,7 @@
   var packages = {
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
-    'httpresource':               { default: 'resource.js',defaultExtension: 'js' },
+//    'httpresource':               { default: 'resource.js',defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' }
   };
   var ngPackageNames = [
@@ -40,8 +40,7 @@
   }
   // Most environments should use UMD; some (Karma) need the individual index files
   var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
-  packages['httpresource']={ default: 'resource_1.js',defaultExtension: 'js' };
-    console.log(packages);
+//  packages['httpresource']={ default: 'resource.js',defaultExtension: 'js' };
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
   var config = {

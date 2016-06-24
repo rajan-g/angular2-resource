@@ -1,54 +1,141 @@
-# angular2-letter-avatar
-letter avatar is angular2 directive. It will generate avatar based on given text
+# angular2-resource and ajax interceptor
+angular2-resource and ajax interceptor is service helper class. You can extends and enjoy like angular 1 resource feature
 
-The sources for this package are in (https://github.com/rajan-g/angular2-letter-avatar.git) repo. Please file issues and pull requests against that repo.
-### Demo Output
-![letter-avatar](https://cloud.githubusercontent.com/assets/13415700/15478225/db7ba80c-2136-11e6-8fe6-0e58bfb54d50.png)
+The sources for this package are in (https://github.com/rajan-g/angular2-resource.git) repo. Please file issues and pull requests against that repo.
 ###Install from npm
 ```sh
-        npm install angular2-letter-avatar
+        npm install angular2-resource-and-ajax-interceptor
 ```
-### component file use like below
+### Example file usage main.ts
 ```javascript
-        import {Component} from 'angular2/core';
-        import {LetterAvatarDirective} from '../directives/letter-avatar.directive';
+      import { bootstrap }    from '@angular/platform-browser-dynamic';
+      import { HTTP_PROVIDERS } from '@angular/http';
+      import {AppComponent} from './app.component';
+      import {Resource} from './httpresource/resource';
+      import {AjaxInterceptor} from './httpresource/ajax-interceptor';
+      import {InterceptorConfig} from './interceptor-config';
 
-        @Component({
-            selector : 'my-app',
-            directives: [LetterAvatarDirective],
-            template:  `
-                <avatar  [avatardata]="avatarDataSquare"></avatar>
-                <avatar  [avatardata]="avatarDataCircle1"></avatar>
-                <avatar  [avatardata]="avatarDataCircle2"></avatar>`    
-        })
-        export class AppComponent {
-            public avatarDataSquare: any = {
-                size: 100,
-        //        background: '#F39C12', // by default it will produce dynamic colors
-                fontColor: '#FFFFFF',
-                border: "2px solid #d3d3d3",
-                isSquare: true,
-                text: "Rajan Gunasekaran"
-            };
-            public avatarDataCircle1: any = {
-                size: 100,
-        //        background: '#F39C12', // by default it will produce dynamic colors
-                fontColor: '#FFFFFF',
-                border: "2px solid #d3d3d3",
-                isSquare: false,
-                text: "Rajan Gunasekaran"
-            };
-            public avatarDataCircle2: any = {
-                size: 100, // default size is 100
-        //        background: '#F39C12', // by default it will produce dynamic colors
-                fontColor: '#FFFFFF',
-                border: "2px solid #d3d3d3",
-                isSquare: false, // if it is true then letter avatar will be in square defaule value is false
-                text: "Siva", // 
-                fixedColor:true //if you enable true then letter will have same color for ever default value is false
-            };
+      bootstrap(AppComponent,[HTTP_PROVIDERS, Resource, AjaxInterceptor,InterceptorConfig])
+
+```
+### resource extend by sampe-resetservice.ts
+```typescript
+    import {Injectable, Inject} from '@angular/core';
+    import {Resource} from './httpresource/resource';
+    import { Http, Headers, Response} from '@angular/http';
+    import {AjaxInterceptor} from './httpresource/ajax-interceptor';
+
+    @Injectable()
+    export class SampleRestService extends Resource {
+    //    resource:Resource
+        constructor( @Inject(Http) http: Http, ajaxInterceptor:AjaxInterceptor) {
+            super(http,ajaxInterceptor);
+            this.config('/user/:id', {id:'@id'}, {
+                getList: {
+                    method: 'get'                
+                },
+                saveMyData:{
+                  params: { id: '@id'}, 
+                  url: 'customer/:id',
+                  method: 'post',
+                  header: {'contentType': 'application/json', 'custom-key':'sample value'} 
+                }
+            });
         }
+    };
+```
 
+### ajax interceptor configuration interceptor-config.ts(note: if you don't like interceptor no need to use this files)
+```typescript
+    import {Injectable} from '@angular/core';
+    import {AjaxInterceptor} from './httpresource/ajax-interceptor';
+
+    @Injectable()
+    export class InterceptorConfig {
+      constructor() {    
+
+      }
+      invoke(ajaxInterceptor: AjaxInterceptor) {
+        //invoke interceptor
+        ajaxInterceptor.config(this.onBeforRequest, this.onAfterResponse, this.onAfterResponseError);   
+      }
+
+      onBeforRequest(requestCall:any) {
+         console.log('new header adde');
+        requestCall.headers.append('Accept', 'application/json');
+        requestCall.headers.append('Content-Type', 'application/json');
+        requestCall.headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return requestCall;
+      }
+      onAfterResponse(response) {
+        console.log('response', response);
+      }
+      onAfterResponseError(error) {
+         console.log('error', error);
+      }
+    }
+```
+
+### finnaly app.component.ts
+```typescript
+    import {Component} from '@angular/core';
+    import {SampleRestService} from './sample-restservice';
+    import {InterceptorConfig} from './interceptor-config';
+    import {AjaxInterceptor} from './httpresource/ajax-interceptor';
+
+    @Component({
+      selector: 'my-app',
+      directives: [],
+      providers: [SampleRestService],
+      template: `sample rest service`
+
+    })
+    export class AppComponent {
+      constructor(private sampleRestService: SampleRestService, private interceptorConfig: InterceptorConfig, ajaxInterceptor:AjaxInterceptor) {    
+        this.sampleRestOperations();
+        this.interceptorConfig.invoke(ajaxInterceptor);
+      }
+
+      sampleRestOperations() {
+        //default method
+        this.sampleRestService['save']({}, { id: 'sampledata' }).then((data) => {
+          console.log("Data", data);
+        }, (error) => {
+          console.log("Data", error);
+        });
+        //default method
+        this.sampleRestService['update']({'id': '12'}, { id: 'sampledata' }).then((data) => {
+          console.log("Data", data);
+        }, (error) => {
+          console.log("Data", error);
+        });
+        //default method
+        this.sampleRestService['get']({}).then((data) => {
+          console.log("Data", data);
+        }, (error) => {
+          console.log("Data", error);
+        });
+        //default method
+        this.sampleRestService['list']({}).then((data) => {
+          console.log("Data", data);
+        }, (error) => {
+          console.log("Data", error);
+        });
+
+        //custome method
+        this.sampleRestService['saveMyData']({'id': '12'}, { id: 'sampledata' }).then((data) => {
+          console.log("Data", data);
+        }, (error) => {
+          console.log("Data", error);
+        });
+         //custome method
+        this.sampleRestService['getList']({}, { id: 'sampledata' }).then((data) => {
+          console.log("Data", data);
+        }, (error) => {
+          console.log("Data", error);
+        });
+      }
+    }
 ```
 
 ### For Test demo

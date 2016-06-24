@@ -11,24 +11,31 @@ System.register(['@angular/core'], function(exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1;
-    var Resource;
+    var AjaxInterceptor;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
-            Resource = (function () {
-                function Resource() {
+            AjaxInterceptor = (function () {
+                function AjaxInterceptor() {
                 }
-                Resource = __decorate([
+                AjaxInterceptor.prototype.constractor = function () {
+                };
+                AjaxInterceptor.prototype.config = function (beforeRequest, afterResponseSuccess, afterResponseError) {
+                    this.beforeRequest = beforeRequest;
+                    this.afterResponseSuccess = afterResponseSuccess;
+                    this.afterResponseError = afterResponseError;
+                };
+                AjaxInterceptor = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])
-                ], Resource);
-                return Resource;
+                ], AjaxInterceptor);
+                return AjaxInterceptor;
             }());
-            exports_1("Resource", Resource);
+            exports_1("AjaxInterceptor", AjaxInterceptor);
         }
     }
 });
-//# sourceMappingURL=resource_1.js.map
+//# sourceMappingURL=ajax-interceptor.js.map

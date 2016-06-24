@@ -1,7 +1,7 @@
 {
-  "name": "angular2-resource",
-  "version": "2.0.1",
-  "description": "angular2-resource is angular2 http service helper.",
+  "name": "angular2-resource-and-ajax-interceptor",
+  "version": "1.0.1",
+  "description": "angular2-resource-and-ajax-interceptor is angular2 http service helper.",
   "main": "index.js",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rajan-g/angular2-letter-avatar.git"
+    "url": "git+https://github.com/rajan-g/angular2-resource.git"
   },
   "dependencies": {
      "@angular/common":  "2.0.0-rc.3",
@@ -39,14 +39,16 @@
     "typings":"^0.8.1"
   },
   "keywords": [
-    "angular2-avatar",
-    "ng2-letter-avatar",
-    "letter-avatar"
+    "angular2-resource",
+    "angular2-interceptor",
+    "angular2-ajax-interceptor",
+    "angular2-resource-ajax-interceptor",
+    "angular2-resource-and-ajax-interceptor"
   ],
   "author": "Rajan G",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rajan-g/angular2-letter-avatar/issues"
+    "url": "https://github.com/rajan-g/angular2-resource/issues"
   },
-  "homepage": "https://github.com/rajan-g/angular2-letter-avatar#readme"
+  "homepage": "https://github.com/rajan-g/angular2-resource/issues"
 }

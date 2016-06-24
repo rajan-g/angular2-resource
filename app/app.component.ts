@@ -2,23 +2,61 @@
  * @author RAJAN G
  */
 
-import {Component, Inject } from '@angular/core';
+import {Component} from '@angular/core';
 import {SampleRestService} from './sample-restservice';
+import {InterceptorConfig} from './interceptor-config';
+import {AjaxInterceptor} from './httpresource/ajax-interceptor';
 
 @Component({
-    selector: 'my-app',
-    directives: [],
-    providers:[SampleRestService],
-    template: `sample rest service`
-   
+  selector: 'my-app',
+  directives: [],
+  providers: [SampleRestService],
+  template: `sample rest service`
+
 })
-export class AppComponent{
-    constructor(@Inject(SampleRestService)sampleRestService: SampleRestService) {
-        console.log(  sampleRestService['getList']);
-        sampleRestService['getList']({},{id:'sampledata'}).then((data)=> {
-            console.log("Data", data);
-        },(error)=> {
-            console.log("Data", error);
-        })
-    }
+export class AppComponent {
+  constructor(private sampleRestService: SampleRestService, private interceptorConfig: InterceptorConfig, ajaxInterceptor:AjaxInterceptor) {    
+    this.sampleRestOperations();
+    this.interceptorConfig.invoke(ajaxInterceptor);
+  }
+  
+  sampleRestOperations() {
+    //default method
+    this.sampleRestService['save']({}, { id: 'sampledata' }).then((data) => {
+      console.log("Data", data);
+    }, (error) => {
+      console.log("Data", error);
+    });
+    //default method
+    this.sampleRestService['update']({'id': '12'}, { id: 'sampledata' }).then((data) => {
+      console.log("Data", data);
+    }, (error) => {
+      console.log("Data", error);
+    });
+    //default method
+    this.sampleRestService['get']({}).then((data) => {
+      console.log("Data", data);
+    }, (error) => {
+      console.log("Data", error);
+    });
+    //default method
+    this.sampleRestService['list']({}).then((data) => {
+      console.log("Data", data);
+    }, (error) => {
+      console.log("Data", error);
+    });
+    
+    //custome method
+    this.sampleRestService['saveMyData']({'id': '12'}, { id: 'sampledata' }).then((data) => {
+      console.log("Data", data);
+    }, (error) => {
+      console.log("Data", error);
+    });
+     //custome method
+    this.sampleRestService['getList']({}, { id: 'sampledata' }).then((data) => {
+      console.log("Data", data);
+    }, (error) => {
+      console.log("Data", error);
+    });
+  }
 }
