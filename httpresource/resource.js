@@ -32,11 +32,11 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                     this.http = http;
                     this.ajaxInterceptor = ajaxInterceptor;
                     //    private http: Http;
-                    this.headers = new http_1.Headers();
+                    this.headers = {};
                     this.methods = {};
                     //        this.http = http;     
-                    this.headers.append('Accept', 'application/json');
-                    this.headers.append('Content-Type', 'application/json');
+                    this.headers['Accept'] = 'application/json';
+                    this.headers['Content-Type'] = 'application/json';
                 }
                 ;
                 Resource.prototype.parseParamAndMakeUrl = function (url, params, methodName) {
@@ -54,10 +54,10 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                 };
                 ;
                 Resource.prototype.headerConfig = function (header) {
-                    var newHeader = new http_1.Headers();
+                    var newHeader = {};
                     if (header) {
                         for (var hKey in header) {
-                            newHeader.append(hKey, header[hKey]);
+                            newHeader[hKey] = header[hKey];
                         }
                     }
                     else {
@@ -144,17 +144,18 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                     this.url = url;
                     this.method = method;
                     this.http = http;
-                    this.headers = headers;
+                    this.headers = new http_1.Headers(headers);
                     this.ajaxInterceptor = ajaxInterceptor;
                     this.body = JSON.stringify(body);
                 }
                 RequestCallbackHD.prototype.then = function (sucessCallback, errCallback) {
                     var _this = this;
+                    var options = new http_1.RequestOptions({ headers: this.headers });
                     if (this.ajaxInterceptor.beforeRequest) {
                         this.ajaxInterceptor.beforeRequest(this);
                     }
                     if (this.method === 'get' || this.method === 'delete') {
-                        this.http[this.method](this.url, this.headers).subscribe(function (response) {
+                        this.http[this.method](this.url, options).subscribe(function (response) {
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(response);
                             }
@@ -166,8 +167,21 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                             errCallback(error);
                         });
                     }
-                    if (this.method === 'post' || this.method === 'put') {
-                        this.http[this.method](this.url, this.body, this.headers).subscribe(function (response) {
+                    else if (this.method === 'post' || this.method === 'put') {
+                        this.http[this.method](this.url, this.body, options).subscribe(function (response) {
+                            if (_this.ajaxInterceptor.afterResponseSuccess) {
+                                _this.ajaxInterceptor.afterResponseSuccess(response);
+                            }
+                            sucessCallback(response.json());
+                        }, function (error) {
+                            if (_this.ajaxInterceptor.afterResponseSuccess) {
+                                _this.ajaxInterceptor.afterResponseSuccess(error);
+                            }
+                            errCallback(error);
+                        });
+                    }
+                    else {
+                        this.http[this.method](this.url, this.body, options).subscribe(function (response) {
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(response);
                             }
