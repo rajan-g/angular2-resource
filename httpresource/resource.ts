@@ -67,7 +67,9 @@ export class Resource {
         }
         // this.defaultParams = defaultParams;
         for (let methodName in this.methods) {
-            this.methods[methodName].params = {};
+            if(!this.methods[methodName].params) {
+                this.methods[methodName].params = {};
+            }
             //set default params
             for (var dParamKey in defaultParams) {
                 this.methods[methodName].params[dParamKey] = defaultParams[dParamKey];

@@ -91,7 +91,9 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                     }
                     // this.defaultParams = defaultParams;
                     var _loop_1 = function(methodName) {
-                        this_1.methods[methodName].params = {};
+                        if (!this_1.methods[methodName].params) {
+                            this_1.methods[methodName].params = {};
+                        }
                         //set default params
                         for (dParamKey in defaultParams) {
                             this_1.methods[methodName].params[dParamKey] = defaultParams[dParamKey];

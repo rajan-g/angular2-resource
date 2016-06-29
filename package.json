@@ -1,6 +1,6 @@
 {
   "name": "angular2-resource-and-ajax-interceptor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "angular2-resource-and-ajax-interceptor is angular2 http service helper.",
   "main": "index.js",
   "scripts": {
@@ -40,7 +40,9 @@
   },
   "keywords": [
     "angular2-resource",
+    "ng2-resource",
     "angular2-interceptor",
+    "ng2-interceptor",
     "angular2-ajax-interceptor",
     "angular2-resource-ajax-interceptor",
     "angular2-resource-and-ajax-interceptor"
