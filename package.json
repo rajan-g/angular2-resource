@@ -1,5 +1,5 @@
 {
-  "name": "angular2-resource-interceptor",
+  "name": "angular2-resource-and-ajax-interceptor",
   "version": "1.0.6",
   "description": "angular2-resource-and-ajax-interceptor is angular2 http service helper.",
   "main": "index.js",
