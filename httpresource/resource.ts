@@ -158,7 +158,11 @@ export class RequestCallbackHD {
                 if (this.ajaxInterceptor.afterResponseSuccess) {
                     this.ajaxInterceptor.afterResponseSuccess(response);
                 }
-                sucessCallback(response.json())
+                if(response.text() === '' || !response.text()) {
+                    sucessCallback(response.text());
+                }else {
+                    sucessCallback(response.json());
+                }
             },
                 (error) => {
                     if (this.ajaxInterceptor.afterResponseSuccess) {

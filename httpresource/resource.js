@@ -187,7 +187,12 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(response);
                             }
-                            sucessCallback(response.json());
+                            if (response.text() === '' || !response.text()) {
+                                sucessCallback(response.text());
+                            }
+                            else {
+                                sucessCallback(response.json());
+                            }
                         }, function (error) {
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(error);
