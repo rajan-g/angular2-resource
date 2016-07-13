@@ -168,8 +168,8 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                                 sucessCallback(response.json());
                             }
                         }, function (error) {
-                            if (_this.ajaxInterceptor.afterResponseSuccess) {
-                                _this.ajaxInterceptor.afterResponseSuccess(error);
+                            if (_this.ajaxInterceptor.afterResponseError) {
+                                _this.ajaxInterceptor.afterResponseError(error);
                             }
                             errCallback(error);
                         });
@@ -186,8 +186,8 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                                 sucessCallback(response.json());
                             }
                         }, function (error) {
-                            if (_this.ajaxInterceptor.afterResponseSuccess) {
-                                _this.ajaxInterceptor.afterResponseSuccess(error);
+                            if (_this.ajaxInterceptor.afterResponseError) {
+                                _this.ajaxInterceptor.afterResponseError(error);
                             }
                             errCallback(error);
                         });
@@ -204,8 +204,8 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                                 sucessCallback(response.json());
                             }
                         }, function (error) {
-                            if (_this.ajaxInterceptor.afterResponseSuccess) {
-                                _this.ajaxInterceptor.afterResponseSuccess(error);
+                            if (_this.ajaxInterceptor.afterResponseError) {
+                                _this.ajaxInterceptor.afterResponseError(error);
                             }
                             errCallback(error);
                         });

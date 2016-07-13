@@ -139,8 +139,8 @@ export class RequestCallbackHD {
                 }
             },
                 (error) => {
-                    if (this.ajaxInterceptor.afterResponseSuccess) {
-                        this.ajaxInterceptor.afterResponseSuccess(error);
+                    if (this.ajaxInterceptor.afterResponseError) {
+                        this.ajaxInterceptor.afterResponseError(error);
                     }
                     errCallback(error);
                 });
@@ -156,8 +156,8 @@ export class RequestCallbackHD {
                 }
             },
                 (error) => {
-                    if (this.ajaxInterceptor.afterResponseSuccess) {
-                        this.ajaxInterceptor.afterResponseSuccess(error);
+                    if (this.ajaxInterceptor.afterResponseError) {
+                        this.ajaxInterceptor.afterResponseError(error);
                     }
                     errCallback(error);
                 });
@@ -173,8 +173,8 @@ export class RequestCallbackHD {
                 }
             },
                 (error) => {
-                    if (this.ajaxInterceptor.afterResponseSuccess) {
-                        this.ajaxInterceptor.afterResponseSuccess(error);
+                    if (this.ajaxInterceptor.afterResponseError) {
+                        this.ajaxInterceptor.afterResponseError(error);
                     }
                     errCallback(error);
                 });
