@@ -216,7 +216,7 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                         }
                     }
                     if (params.length === 1) {
-                        callback(response);
+                        callback(jsonData);
                         return;
                     }
                     if (params.length > 1) {

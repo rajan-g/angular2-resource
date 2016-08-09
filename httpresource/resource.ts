@@ -189,7 +189,7 @@ export class RequestCallbackHD {
         }
       }
       if(params.length === 1) {
-        callback(response);
+        callback(jsonData);
         return;
       }
       if(params.length >1) {
