@@ -198,6 +198,9 @@ export class RequestCallbackHD {
       }
     };
     getParamNames(func) {
+      if(!func) {
+        return null;
+      }
       var fnStr = func.toString().replace(this.STRIP_COMMENTS, '');
       var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(this.ARGUMENT_NAMES);
       if (result === null)
