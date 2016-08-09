@@ -143,6 +143,8 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
             exports_1("Resource", Resource);
             RequestCallbackHD = (function () {
                 function RequestCallbackHD(url, headers, method, body, http, ajaxInterceptor) {
+                    this.STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+                    this.ARGUMENT_NAMES = /([^\s,]+)/g;
                     this.url = url;
                     this.method = method;
                     this.http = http;
@@ -161,17 +163,12 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(response);
                             }
-                            if (response.text() === '' || !response.text()) {
-                                sucessCallback(response.text());
-                            }
-                            else {
-                                sucessCallback(response.json());
-                            }
+                            _this.invokeCallback(sucessCallback, response);
                         }, function (error) {
                             if (_this.ajaxInterceptor.afterResponseError) {
                                 _this.ajaxInterceptor.afterResponseError(error);
                             }
-                            errCallback(error);
+                            _this.invokeCallback(errCallback, error);
                         });
                     }
                     else if (this.method === 'post' || this.method === 'put') {
@@ -179,17 +176,12 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(response);
                             }
-                            if (response.text() === '' || !response.text()) {
-                                sucessCallback(response.text());
-                            }
-                            else {
-                                sucessCallback(response.json());
-                            }
+                            _this.invokeCallback(sucessCallback, response);
                         }, function (error) {
                             if (_this.ajaxInterceptor.afterResponseError) {
                                 _this.ajaxInterceptor.afterResponseError(error);
                             }
-                            errCallback(error);
+                            _this.invokeCallback(errCallback, error);
                         });
                     }
                     else {
@@ -197,19 +189,48 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(response);
                             }
-                            if (response.text() === '' || !response.text()) {
-                                sucessCallback(response.text());
-                            }
-                            else {
-                                sucessCallback(response.json());
-                            }
+                            _this.invokeCallback(sucessCallback, response);
                         }, function (error) {
                             if (_this.ajaxInterceptor.afterResponseError) {
                                 _this.ajaxInterceptor.afterResponseError(error);
                             }
-                            errCallback(error);
+                            _this.invokeCallback(errCallback, error);
                         });
                     }
+                };
+                RequestCallbackHD.prototype.invokeCallback = function (callback, response) {
+                    var params = this.getParamNames(callback);
+                    var jsonData;
+                    if (!params) {
+                        return;
+                    }
+                    if (response.text() === '' || !response.text()) {
+                        jsonData = response.text();
+                    }
+                    else {
+                        try {
+                            jsonData = response.json();
+                        }
+                        catch (e) {
+                            jsonData = response.text();
+                        }
+                    }
+                    if (params.length === 1) {
+                        callback(response);
+                        return;
+                    }
+                    if (params.length > 1) {
+                        callback(jsonData, response);
+                        return;
+                    }
+                };
+                ;
+                RequestCallbackHD.prototype.getParamNames = function (func) {
+                    var fnStr = func.toString().replace(this.STRIP_COMMENTS, '');
+                    var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(this.ARGUMENT_NAMES);
+                    if (result === null)
+                        result = [];
+                    return result;
                 };
                 return RequestCallbackHD;
             }());

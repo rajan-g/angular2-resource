@@ -1,7 +1,7 @@
 import {Injectable, Inject} from '@angular/core';
-import {Resource} from './httpresource/resource';
+import {Resource} from '../httpresource';
 import { Http, Headers, Response} from '@angular/http';
-import {AjaxInterceptor} from './httpresource/ajax-interceptor';
+import {AjaxInterceptor} from '../httpresource';
 
 @Injectable()
 export class SampleRestService extends Resource {
@@ -11,6 +11,10 @@ export class SampleRestService extends Resource {
         this.config('/user/:id', {id:'@id'}, {
             getList: {
                 method: 'get'                
+            },
+            getExample: {
+                method: 'get',
+                url: '/app/example.json'           
             },
             saveMyData:{
               params: { id: '@id'}, 

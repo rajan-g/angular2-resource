@@ -5,7 +5,7 @@
 import {Component} from '@angular/core';
 import {SampleRestService} from './sample-restservice';
 import {InterceptorConfig} from './interceptor-config';
-import {AjaxInterceptor} from './httpresource/ajax-interceptor';
+import {AjaxInterceptor} from '../httpresource';
 
 @Component({
   selector: 'my-app',
@@ -58,5 +58,10 @@ export class AppComponent {
     }, (error) => {
       console.log("Data", error);
     });
+//    this.sampleRestService['getExample']().then((data, status) => {
+//      console.log("Data", data, "status", status);
+//    }, (error, status) => {
+//      console.log("Data", error, "status", status);
+//    });
   }
 }

@@ -113,7 +113,9 @@ export class RequestCallbackHD {
     public ajaxInterceptor: AjaxInterceptor;
     public headers: Headers;
     method: string; body: any;
-    http: Http
+    http: Http;
+    STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+    ARGUMENT_NAMES = /([^\s,]+)/g;
     constructor(url: string, headers: Headers, method: string, body: any, http: Http, ajaxInterceptor: AjaxInterceptor) {
         this.url = url;
         this.method = method;
@@ -132,54 +134,75 @@ export class RequestCallbackHD {
                 if (this.ajaxInterceptor.afterResponseSuccess) {
                     this.ajaxInterceptor.afterResponseSuccess(response);
                 }
-                if(response.text() === '' || !response.text()) {
-                    sucessCallback(response.text());
-                }else {
-                    sucessCallback(response.json());
-                }
+                this.invokeCallback(sucessCallback, response);          
             },
                 (error) => {
                     if (this.ajaxInterceptor.afterResponseError) {
                         this.ajaxInterceptor.afterResponseError(error);
                     }
-                    errCallback(error);
+                    this.invokeCallback(errCallback, error);
                 });
         } else if (this.method === 'post' || this.method === 'put') {
             this.http[this.method](this.url, this.body, options).subscribe((response: Response) => {
                 if (this.ajaxInterceptor.afterResponseSuccess) {
                     this.ajaxInterceptor.afterResponseSuccess(response);
                 }
-                if(response.text() === '' || !response.text()) {
-                    sucessCallback(response.text());
-                }else {
-                    sucessCallback(response.json());
-                }
+                this.invokeCallback(sucessCallback, response);
             },
                 (error) => {
                     if (this.ajaxInterceptor.afterResponseError) {
                         this.ajaxInterceptor.afterResponseError(error);
                     }
-                    errCallback(error);
+                    this.invokeCallback(errCallback, error);
                 });
         } else {
             this.http[this.method](this.url, this.body, options).subscribe((response: Response) => {
                 if (this.ajaxInterceptor.afterResponseSuccess) {
                     this.ajaxInterceptor.afterResponseSuccess(response);
                 }
-                if(response.text() === '' || !response.text()) {
-                    sucessCallback(response.text());
-                }else {
-                    sucessCallback(response.json());
-                }
+                this.invokeCallback(sucessCallback, response);
             },
                 (error) => {
                     if (this.ajaxInterceptor.afterResponseError) {
                         this.ajaxInterceptor.afterResponseError(error);
                     }
-                    errCallback(error);
+                    this.invokeCallback(errCallback, error);
                 });
         }
 
+    }    
+    
+    invokeCallback(callback, response) {
+      let params = this.getParamNames(callback);
+      let jsonData;
+      if(!params) {
+        return;
+      }
+      if (response.text() === '' || !response.text()) {
+        jsonData = response.text();
+      } else {
+      try{
+        jsonData = response.json();
+      }
+        catch(e) {
+          jsonData = response.text();
+        }
+      }
+      if(params.length === 1) {
+        callback(response);
+        return;
+      }
+      if(params.length >1) {
+        callback(jsonData, response);
+        return;
+      }
+    };
+    getParamNames(func) {
+      var fnStr = func.toString().replace(this.STRIP_COMMENTS, '');
+      var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(this.ARGUMENT_NAMES);
+      if (result === null)
+        result = [];
+      return result;
     }
 
 }

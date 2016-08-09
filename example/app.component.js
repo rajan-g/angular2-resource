@@ -1,7 +1,7 @@
 /*
  * @author RAJAN G
  */
-System.register(['@angular/core', './sample-restservice', './interceptor-config', './httpresource/ajax-interceptor'], function(exports_1, context_1) {
+System.register(['@angular/core', './sample-restservice', './interceptor-config', '../httpresource'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['@angular/core', './sample-restservice', './interceptor-config'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, sample_restservice_1, interceptor_config_1, ajax_interceptor_1;
+    var core_1, sample_restservice_1, interceptor_config_1, httpresource_1;
     var AppComponent;
     return {
         setters:[
@@ -26,8 +26,8 @@ System.register(['@angular/core', './sample-restservice', './interceptor-config'
             function (interceptor_config_1_1) {
                 interceptor_config_1 = interceptor_config_1_1;
             },
-            function (ajax_interceptor_1_1) {
-                ajax_interceptor_1 = ajax_interceptor_1_1;
+            function (httpresource_1_1) {
+                httpresource_1 = httpresource_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -74,6 +74,11 @@ System.register(['@angular/core', './sample-restservice', './interceptor-config'
                     }, function (error) {
                         console.log("Data", error);
                     });
+                    //    this.sampleRestService['getExample']().then((data, status) => {
+                    //      console.log("Data", data, "status", status);
+                    //    }, (error, status) => {
+                    //      console.log("Data", error, "status", status);
+                    //    });
                 };
                 AppComponent = __decorate([
                     core_1.Component({
@@ -82,7 +87,7 @@ System.register(['@angular/core', './sample-restservice', './interceptor-config'
                         providers: [sample_restservice_1.SampleRestService],
                         template: "sample rest service"
                     }), 
-                    __metadata('design:paramtypes', [sample_restservice_1.SampleRestService, interceptor_config_1.InterceptorConfig, ajax_interceptor_1.AjaxInterceptor])
+                    __metadata('design:paramtypes', [sample_restservice_1.SampleRestService, interceptor_config_1.InterceptorConfig, httpresource_1.AjaxInterceptor])
                 ], AppComponent);
                 return AppComponent;
             }());

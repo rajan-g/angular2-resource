@@ -1,4 +1,4 @@
-System.register(['@angular/core', './httpresource/resource', '@angular/http', './httpresource/ajax-interceptor'], function(exports_1, context_1) {
+System.register(['@angular/core', '../httpresource', '@angular/http'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
@@ -18,21 +18,19 @@ System.register(['@angular/core', './httpresource/resource', '@angular/http', '.
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, resource_1, http_1, ajax_interceptor_1;
+    var core_1, httpresource_1, http_1, httpresource_2;
     var SampleRestService;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (resource_1_1) {
-                resource_1 = resource_1_1;
+            function (httpresource_1_1) {
+                httpresource_1 = httpresource_1_1;
+                httpresource_2 = httpresource_1_1;
             },
             function (http_1_1) {
                 http_1 = http_1_1;
-            },
-            function (ajax_interceptor_1_1) {
-                ajax_interceptor_1 = ajax_interceptor_1_1;
             }],
         execute: function() {
             SampleRestService = (function (_super) {
@@ -43,6 +41,10 @@ System.register(['@angular/core', './httpresource/resource', '@angular/http', '.
                     this.config('/user/:id', { id: '@id' }, {
                         getList: {
                             method: 'get'
+                        },
+                        getExample: {
+                            method: 'get',
+                            url: '/app/example.json'
                         },
                         saveMyData: {
                             params: { id: '@id' },
@@ -55,10 +57,10 @@ System.register(['@angular/core', './httpresource/resource', '@angular/http', '.
                 SampleRestService = __decorate([
                     core_1.Injectable(),
                     __param(0, core_1.Inject(http_1.Http)), 
-                    __metadata('design:paramtypes', [http_1.Http, ajax_interceptor_1.AjaxInterceptor])
+                    __metadata('design:paramtypes', [http_1.Http, httpresource_2.AjaxInterceptor])
                 ], SampleRestService);
                 return SampleRestService;
-            }(resource_1.Resource));
+            }(httpresource_1.Resource));
             exports_1("SampleRestService", SampleRestService);
             ;
         }

@@ -1,4 +1,4 @@
-System.register(['@angular/platform-browser-dynamic', '@angular/http', './app.component', './httpresource/resource', './httpresource/ajax-interceptor', './interceptor-config'], function(exports_1, context_1) {
+System.register(['@angular/platform-browser-dynamic', '@angular/http', './app.component', '../httpresource/resource', '../httpresource/ajax-interceptor', './interceptor-config'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var platform_browser_dynamic_1, http_1, app_component_1, resource_1, ajax_interceptor_1, interceptor_config_1;

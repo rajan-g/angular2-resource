@@ -3,7 +3,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {AjaxInterceptor} from './httpresource/ajax-interceptor';
+import {AjaxInterceptor} from '../httpresource';
 
 @Injectable()
 export class InterceptorConfig {
