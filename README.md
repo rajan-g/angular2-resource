@@ -2,7 +2,13 @@
 angular2-resource and ajax interceptor is service helper class. You can extends and enjoy like angular 1 resource feature
 
 The sources for this package are in (https://github.com/rajan-g/angular2-resource.git) repo. Please file issues and pull requests against that repo.
-###Install from npm
+
+### Live Demo
+[Live Demo Site](http://www.angular2modules.com/resource "Live Demo Site For Resource ")
+OR
+[Live Demo Site](http://www.angular2modules.com "Live Demo Site For Letter Resource ")
+
+### Install from npm
 ```sh
         npm install angular2-resource-and-ajax-interceptor
 ```
