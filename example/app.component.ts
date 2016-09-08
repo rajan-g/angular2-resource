@@ -9,7 +9,7 @@ import {AjaxInterceptor} from '../httpresource';
 
 @Component({
   selector: 'my-app',
-  directives: [],
+//  directives: [],
   providers: [SampleRestService],
   template: `sample rest service`
 

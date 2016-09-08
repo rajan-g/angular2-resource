@@ -83,7 +83,7 @@ System.register(['@angular/core', './sample-restservice', './interceptor-config'
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        directives: [],
+                        //  directives: [],
                         providers: [sample_restservice_1.SampleRestService],
                         template: "sample rest service"
                     }), 
