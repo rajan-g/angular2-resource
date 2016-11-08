@@ -15,16 +15,30 @@ export class Resource {
         this.headers['Accept'] = 'application/json';
         this.headers['Content-Type']= 'application/json';
     };
-    parseParamAndMakeUrl(url: string, params: Object, methodName) {
+    parseParamAndMakeUrl(url: string, paramsObj: Object, methodName, argumentLength) {
         let method = this.methods[methodName];
+        let params = JSON.parse(JSON.stringify(paramsObj));
         let replacedUrl = url + '';
+        let missingParam = '';
         for (let paramkey in method.params) {
             let paramReplaceValue = params[paramkey];
             let paramReplaceKey = method.params[paramkey].replace(new RegExp('@', 'g'), ':')
-            if (!paramReplaceValue) {
+            if (paramReplaceValue === undefined || paramReplaceValue === null) {
                 paramReplaceValue = '';
             }
-            replacedUrl = replacedUrl.replace(new RegExp(paramReplaceKey, 'g'), paramReplaceValue);
+            replacedUrl = replacedUrl.replace(new RegExp(paramReplaceKey, 'g'), paramReplaceValue);            
+            delete params[paramkey];
+        }
+        for(let key in params) {
+          if(params[key]!== undefined && params[key]!== null && argumentLength === 2) {
+              missingParam += '&'+key+'='+params[key];
+            }
+        }
+        if(replacedUrl && replacedUrl.indexOf('?')!=-1 && missingParam!= '') {
+          replacedUrl += missingParam;
+        }else if(replacedUrl && missingParam!= ''){
+          missingParam = missingParam.substring(1,missingParam.length);
+          replacedUrl += '?'+missingParam;          
         }
         return replacedUrl;
     };
@@ -80,11 +94,20 @@ export class Resource {
                 let validUrl = method.url ? method.url : this.url;
                 let header: Headers = this.headerConfig(method.header);
                 let params = {};
-                let url = this.parseParamAndMakeUrl(validUrl, params, methodName);
-                return new RequestCallbackHD(url, header, method.method, {}, this.http, this.ajaxInterceptor);
+                let body = {};
+                if(arguments.length == 1) {
+                  params = arguments[0];
+                  body = arguments[0];
+                }
+                if(arguments.length == 2) {
+                  params = arguments[0];
+                  body = arguments[1];
+                }
+                let url = this.parseParamAndMakeUrl(validUrl, params, methodName, arguments.length);
+                return new RequestCallbackHD(url, header, method.method, body, this.http, this.ajaxInterceptor);
             };
 
-            //create method with param only
+            /*//create method with param only
             this[methodName] = function (params: Object) {
                 let method = this.methods[methodName];
                 let validUrl = method.url ? method.url : this.url;
@@ -102,7 +125,7 @@ export class Resource {
                 params = params ? params : {};
                 let url = this.parseParamAndMakeUrl(validUrl, params, methodName);
                 return new RequestCallbackHD(url, header, method.method, body, this.http, this.ajaxInterceptor);
-            };
+            };*/
         }
     }
 

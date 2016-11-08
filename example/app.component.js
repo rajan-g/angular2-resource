@@ -45,7 +45,7 @@ System.register(['@angular/core', './sample-restservice', './interceptor-config'
                         console.log("Data", error);
                     });
                     //default method
-                    this.sampleRestService['update']({ 'id': '12' }, { id: 'sampledata' }).then(function (data) {
+                    this.sampleRestService['update']({ 'id': '12', name: 'rajan', idcard: 0 }, { id: '12345', username: 'test' }).then(function (data) {
                         console.log("Data", data);
                     }, function (error) {
                         console.log("Data", error);

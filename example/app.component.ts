@@ -28,7 +28,7 @@ export class AppComponent {
       console.log("Data", error);
     });
     //default method
-    this.sampleRestService['update']({'id': '12'}, { id: 'sampledata' }).then((data) => {
+    this.sampleRestService['update']({'id': '12', name: 'rajan', idcard:0}, { id: '12345', username:'test' }).then((data) => {
       console.log("Data", data);
     }, (error) => {
       console.log("Data", error);

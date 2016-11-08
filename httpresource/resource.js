@@ -39,16 +39,31 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                     this.headers['Content-Type'] = 'application/json';
                 }
                 ;
-                Resource.prototype.parseParamAndMakeUrl = function (url, params, methodName) {
+                Resource.prototype.parseParamAndMakeUrl = function (url, paramsObj, methodName, argumentLength) {
                     var method = this.methods[methodName];
+                    var params = JSON.parse(JSON.stringify(paramsObj));
                     var replacedUrl = url + '';
+                    var missingParam = '';
                     for (var paramkey in method.params) {
                         var paramReplaceValue = params[paramkey];
                         var paramReplaceKey = method.params[paramkey].replace(new RegExp('@', 'g'), ':');
-                        if (!paramReplaceValue) {
+                        if (paramReplaceValue === undefined || paramReplaceValue === null) {
                             paramReplaceValue = '';
                         }
                         replacedUrl = replacedUrl.replace(new RegExp(paramReplaceKey, 'g'), paramReplaceValue);
+                        delete params[paramkey];
+                    }
+                    for (var key in params) {
+                        if (params[key] !== undefined && params[key] !== null && argumentLength === 2) {
+                            missingParam += '&' + key + '=' + params[key];
+                        }
+                    }
+                    if (replacedUrl && replacedUrl.indexOf('?') != -1 && missingParam != '') {
+                        replacedUrl += missingParam;
+                    }
+                    else if (replacedUrl && missingParam != '') {
+                        missingParam = missingParam.substring(1, missingParam.length);
+                        replacedUrl += '?' + missingParam;
                     }
                     return replacedUrl;
                 };
@@ -104,25 +119,16 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                             var validUrl = method.url ? method.url : this.url;
                             var header = this.headerConfig(method.header);
                             var params = {};
-                            var url = this.parseParamAndMakeUrl(validUrl, params, methodName);
-                            return new RequestCallbackHD(url, header, method.method, {}, this.http, this.ajaxInterceptor);
-                        };
-                        //create method with param only
-                        this_1[methodName] = function (params) {
-                            var method = this.methods[methodName];
-                            var validUrl = method.url ? method.url : this.url;
-                            var header = this.headerConfig(method.header);
-                            params = params ? params : {};
-                            var url = this.parseParamAndMakeUrl(validUrl, params, methodName);
-                            return new RequestCallbackHD(url, header, method.method, {}, this.http, this.ajaxInterceptor);
-                        };
-                        //create method with body
-                        this_1[methodName] = function (params, body) {
-                            var method = this.methods[methodName];
-                            var validUrl = method.url ? method.url : this.url;
-                            var header = this.headerConfig(method.header);
-                            params = params ? params : {};
-                            var url = this.parseParamAndMakeUrl(validUrl, params, methodName);
+                            var body = {};
+                            if (arguments.length == 1) {
+                                params = arguments[0];
+                                body = arguments[0];
+                            }
+                            if (arguments.length == 2) {
+                                params = arguments[0];
+                                body = arguments[1];
+                            }
+                            var url = this.parseParamAndMakeUrl(validUrl, params, methodName, arguments.length);
                             return new RequestCallbackHD(url, header, method.method, body, this.http, this.ajaxInterceptor);
                         };
                     };
