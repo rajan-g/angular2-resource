@@ -1,6 +1,5 @@
-System.register(['@angular/core', '@angular/http', './ajax-interceptor'], function(exports_1, context_1) {
+System.register(["@angular/core", "@angular/http", "./ajax-interceptor"], function (exports_1, context_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,10 +12,10 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, http_1, ajax_interceptor_1;
-    var Resource, RequestCallbackHD;
+    var core_1, http_1, ajax_interceptor_1, Resource, RequestCallbackHD;
+    var __moduleName = context_1 && context_1.id;
     return {
-        setters:[
+        setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -25,9 +24,10 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
             },
             function (ajax_interceptor_1_1) {
                 ajax_interceptor_1 = ajax_interceptor_1_1;
-            }],
-        execute: function() {
-            Resource = (function () {
+            }
+        ],
+        execute: function () {
+            Resource = /** @class */ (function () {
                 function Resource(http, ajaxInterceptor) {
                     this.http = http;
                     this.ajaxInterceptor = ajaxInterceptor;
@@ -104,13 +104,12 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                     for (var methodName in customMethods) {
                         this.methods[methodName] = customMethods[methodName];
                     }
-                    // this.defaultParams = defaultParams;
-                    var _loop_1 = function(methodName) {
+                    var _loop_1 = function (methodName) {
                         if (!this_1.methods[methodName].params) {
                             this_1.methods[methodName].params = {};
                         }
                         //set default params
-                        for (dParamKey in defaultParams) {
+                        for (var dParamKey in defaultParams) {
                             this_1.methods[methodName].params[dParamKey] = defaultParams[dParamKey];
                         }
                         //create method without body and params
@@ -133,26 +132,25 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                         };
                     };
                     var this_1 = this;
-                    var dParamKey;
+                    // this.defaultParams = defaultParams;
                     for (var methodName in this.methods) {
                         _loop_1(methodName);
                     }
                 };
                 Resource = __decorate([
                     core_1.Injectable(),
-                    __param(0, core_1.Inject(http_1.Http)),
-                    __param(1, core_1.Inject(ajax_interceptor_1.AjaxInterceptor)), 
-                    __metadata('design:paramtypes', [http_1.Http, ajax_interceptor_1.AjaxInterceptor])
+                    __param(0, core_1.Inject(http_1.Http)), __param(1, core_1.Inject(ajax_interceptor_1.AjaxInterceptor)),
+                    __metadata("design:paramtypes", [http_1.Http, ajax_interceptor_1.AjaxInterceptor])
                 ], Resource);
                 return Resource;
             }());
             exports_1("Resource", Resource);
-            RequestCallbackHD = (function () {
+            RequestCallbackHD = /** @class */ (function () {
                 function RequestCallbackHD(url, headers, method, body, http, ajaxInterceptor) {
                     this.STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
                     this.ARGUMENT_NAMES = /([^\s,]+)/g;
                     this.url = url;
-                    this.method = method;
+                    this.method = method ? method.toLowerCase() : 'get';
                     this.http = http;
                     this.headers = new http_1.Headers(headers);
                     this.ajaxInterceptor = ajaxInterceptor;
@@ -164,7 +162,7 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                     if (this.ajaxInterceptor.beforeRequest) {
                         this.ajaxInterceptor.beforeRequest(this);
                     }
-                    if (this.method === 'get' || this.method === 'delete') {
+                    if (this.method === 'get' || (this.method === 'delete' && !this.body)) {
                         this.http[this.method](this.url, options).subscribe(function (response) {
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(response);
@@ -177,7 +175,7 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
                             _this.invokeCallback(errCallback, error);
                         });
                     }
-                    else if (this.method === 'post' || this.method === 'put') {
+                    else if (this.method === 'post' || this.method === 'put' || this.method === 'patch' || (this.method === 'delete' && this.body)) {
                         this.http[this.method](this.url, this.body, options).subscribe(function (response) {
                             if (_this.ajaxInterceptor.afterResponseSuccess) {
                                 _this.ajaxInterceptor.afterResponseSuccess(response);
@@ -245,6 +243,6 @@ System.register(['@angular/core', '@angular/http', './ajax-interceptor'], functi
             }());
             exports_1("RequestCallbackHD", RequestCallbackHD);
         }
-    }
+    };
 });
 //# sourceMappingURL=resource.js.map

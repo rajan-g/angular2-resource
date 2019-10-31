@@ -141,7 +141,7 @@ export class RequestCallbackHD {
     ARGUMENT_NAMES = /([^\s,]+)/g;
     constructor(url: string, headers: Headers, method: string, body: any, http: Http, ajaxInterceptor: AjaxInterceptor) {
         this.url = url;
-        this.method = method;
+        this.method = method? method.toLowerCase(): 'get';
         this.http = http;
         this.headers = new Headers(headers);
         this.ajaxInterceptor = ajaxInterceptor;
@@ -152,7 +152,7 @@ export class RequestCallbackHD {
         if (this.ajaxInterceptor.beforeRequest) {
             this.ajaxInterceptor.beforeRequest(this);
         }
-        if (this.method === 'get' || this.method === 'delete') {
+        if (this.method === 'get' || (this.method === 'delete' && !this.body)) {
             this.http[this.method](this.url, options).subscribe((response: Response) => {
                 if (this.ajaxInterceptor.afterResponseSuccess) {
                     this.ajaxInterceptor.afterResponseSuccess(response);
@@ -165,7 +165,7 @@ export class RequestCallbackHD {
                     }
                     this.invokeCallback(errCallback, error);
                 });
-        } else if (this.method === 'post' || this.method === 'put') {
+        } else if (this.method === 'post' || this.method === 'put' || this.method === 'patch' || (this.method === 'delete' && this.body)) {
             this.http[this.method](this.url, this.body, options).subscribe((response: Response) => {
                 if (this.ajaxInterceptor.afterResponseSuccess) {
                     this.ajaxInterceptor.afterResponseSuccess(response);

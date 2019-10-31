@@ -1,6 +1,6 @@
 {
   "name": "angular2-resource-and-ajax-interceptor",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "angular2-resource-and-ajax-interceptor is angular2 http service helper.",
   "main": "index.js",
   "scripts": {
@@ -13,11 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/rajan-g/angular2-resource.git"
   },
-  "dependencies": {
-   
-  },
+  "dependencies": {},
   "devDependencies": {
-     "@angular/common": "~2.1.1",
+    "@angular/common": "~2.1.1",
     "@angular/compiler": "~2.1.1",
     "@angular/core": "~2.1.1",
     "@angular/forms": "~2.1.1",
@@ -36,7 +34,7 @@
     "@types/node": "^6.0.45",
     "concurrently": "^3.0.0",
     "lite-server": "^2.2.2",
-    "typescript": "^2.0.3"
+    "typescript": "3.3.1"
   },
   "keywords": [
     "angular2-resource",
