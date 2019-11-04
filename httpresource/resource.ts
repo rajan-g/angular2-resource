@@ -152,7 +152,7 @@ export class RequestCallbackHD {
         if (this.ajaxInterceptor.beforeRequest) {
             this.ajaxInterceptor.beforeRequest(this);
         }
-        if (this.method === 'get' || (this.method === 'delete' && !this.body)) {
+        if (this.method === 'get' || this.method === 'delete') {
             this.http[this.method](this.url, options).subscribe((response: Response) => {
                 if (this.ajaxInterceptor.afterResponseSuccess) {
                     this.ajaxInterceptor.afterResponseSuccess(response);
@@ -165,7 +165,7 @@ export class RequestCallbackHD {
                     }
                     this.invokeCallback(errCallback, error);
                 });
-        } else if (this.method === 'post' || this.method === 'put' || this.method === 'patch' || (this.method === 'delete' && this.body)) {
+        } else if (this.method === 'post' || this.method === 'put' || this.method === 'patch') {
             this.http[this.method](this.url, this.body, options).subscribe((response: Response) => {
                 if (this.ajaxInterceptor.afterResponseSuccess) {
                     this.ajaxInterceptor.afterResponseSuccess(response);
